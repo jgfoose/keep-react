@@ -22,7 +22,7 @@ class CardList extends Component {
   }
 
   handleHeader = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 || e.keyCode === 9) {
       this.props.updateHeader(this.props.index, this.cardHeader.current.innerHTML.trim());
       e.target.blur();
     }
