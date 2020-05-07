@@ -1,19 +1,21 @@
-import React, { Component } from  'react';
+import React from 'react';
+import { Consumer } from './Context';
 
-class CardColors extends Component {
+const CardColors = (props) => {
 
-  render() {
-
-    let className = `color_option ${this.props.color}`
-
-    return (
-      <div 
-        className={className}
-        onClick={() => this.props.updateCardColor(this.props.cardId, this.props.color)}
-      >
-      </div>
-    );
-  }
+  return (
+    <Consumer>
+      { context => {
+        let className = `color_option ${props.color}`
+        return (
+          <div 
+            className={className}
+            onClick={() => context.actions.updateCardColor(props.cardId, props.color)}>
+          </div>
+        );
+      }}
+    </Consumer>
+  );
 }
 
 export default CardColors

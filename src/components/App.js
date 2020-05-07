@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Provider } from './Context';
+import Cards from './Cards';
 import NewCard from './NewCard';
-import CardItem from './CardItem';
 
 class Card {
     constructor (id, items) {
@@ -114,24 +115,21 @@ class App extends Component {
 
   render() {
     return(
-      <div id="card_container">     
-        <NewCard addCard={this.handleAddCard}/>
-        {this.state.cards.map( ({header,id,items,color}, index) =>
-          <CardItem 
-            header={header}
-            id={id}
-            key={id.toString()} 
-            items={items}
-            index={index}
-            color={color}
-            removeCard={this.handleRemoveCard}
-            updateHeader={this.handleUpdateHeader}
-            addNewItem={this.handleAddNewItem}
-            deleteListItem={this.handleDeleteItem}
-            updateCardColor={this.handleCardColor}
-          />  
-        )}
-      </div>
+      <Provider value={{
+        cards: this.state.cards,
+        actions: {
+          updateCardColor: this.handleCardColor,
+          removeCard: this.handleRemoveCard,
+          updateHeader: this.handleUpdateHeader,
+          addNewItem: this.handleAddNewItem,
+          deleteListItem: this.handleDeleteItem
+        }
+      }}>
+        <div id="card_container">     
+          <NewCard addCard={this.handleAddCard}/>
+          <Cards />
+        </div>
+      </Provider>
     );
   }
 }
