@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import ItemList from './ItemList';
+import ListItem from './ListItem';
 import ColorOptions from './ColorOptions';
 
-class CardList extends Component {
+class CardItem extends Component {
 
   colors = ['white', 'yellow', 'green', 'red', 'purple', 'blue'];
 
@@ -49,10 +49,11 @@ class CardList extends Component {
           ✖
         </button>
         {this.props.items.map( (item,index) =>
-          <ItemList 
+          <ListItem 
             item={this.props.items[index]}
-            index={index}
-            id = {this.props.id}
+            index = {index}
+            key={index}
+            cardId = {this.props.id}
             deleteListItem={this.props.deleteListItem}
           />
         )}
@@ -67,7 +68,7 @@ class CardList extends Component {
           {this.colors.map (color => 
             <ColorOptions 
               color={color}
-              id={this.props.id}
+              cardId={this.props.id}
               updateCardColor={this.props.updateCardColor}
             />
           )}
@@ -77,4 +78,4 @@ class CardList extends Component {
   }
 }
 
-export default CardList;
+export default CardItem;

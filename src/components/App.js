@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NewCard from './NewCard';
-import CardList from './CardList';
+import CardItem from './CardItem';
 
 class Card {
     constructor (id, items) {
@@ -14,24 +14,25 @@ class Card {
 class App extends Component {
   
   state = {
-    cards: [
-    ]
+    cards: []
   }
 
   getLocalStorage = () => {
     var keys = Object.keys(window.localStorage);
     let loadedCards = [];
     for(var i=0; i < keys.length; i++){
-      if(window.localStorage.getItem(keys[i]) !== null){
-        let storedCard = JSON.parse(window.localStorage.getItem(keys[i]));
-        let thisCard = new Card(i);
-        thisCard.id = storedCard.id;
-        thisCard.items = storedCard.items;
-        thisCard.header = storedCard.header;
-        thisCard.color = storedCard.color;
-        loadedCards.push(thisCard);
-      }
-      this.prevCardId = parseInt(keys[i]) + 1;
+      let storedCard = JSON.parse(window.localStorage.getItem(keys[i]));
+      let thisCard = new Card(i);
+      thisCard.id = i;
+      thisCard.items = storedCard.items;
+      thisCard.header = storedCard.header;
+      thisCard.color = storedCard.color;
+      loadedCards.push(thisCard);
+      this.prevCardId = i + 1;
+   }
+   window.localStorage.clear();
+   for( i=0; i<loadedCards.length; i++) {
+     window.localStorage.setItem(loadedCards[i].id, JSON.stringify(loadedCards[i]));
    }
    this.setState({
       cards: loadedCards
@@ -48,7 +49,7 @@ class App extends Component {
           ...prevState.cards,
           {
             header: "Card Title",
-            id: this.prevCardId += 1,
+            id: this.prevCardId,
             items: [],
             color: "white"
           }
@@ -57,6 +58,7 @@ class App extends Component {
     }, () => {
       let index = this.state.cards.findIndex(card => card.id === this.prevCardId);
       window.localStorage.setItem(this.prevCardId, JSON.stringify(this.state.cards[index]));
+      this.prevCardId += 1;
     });
   }
 
@@ -88,21 +90,21 @@ class App extends Component {
     });
   }
 
-  handleDeleteItem = (index, id) => {
-    let cardIndex = this.state.cards.findIndex(card => card.id === id);
+  handleDeleteItem = (listItem, cardId) => {
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     this.setState( prevState => ({
-      items: prevState.cards[cardIndex].items.splice(index,1)
+      items: prevState.cards[cardIndex].items.splice(listItem,1)
     }), () => {
-      window.localStorage.setItem(id, JSON.stringify(this.state.cards[cardIndex]));
+      window.localStorage.setItem(cardId, JSON.stringify(this.state.cards[cardIndex]));
     });
   }
 
-  handleCardColor = (id, color) => {
-    let cardIndex = this.state.cards.findIndex(card => card.id === id);
+  handleCardColor = (cardId, color) => {
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     this.setState( prevState => ({
       color: prevState.cards[cardIndex].color = color
     }), () => {
-      window.localStorage.setItem(id, JSON.stringify(this.state.cards[cardIndex]));
+      window.localStorage.setItem(cardId, JSON.stringify(this.state.cards[cardIndex]));
     });
   }
 
@@ -114,14 +116,14 @@ class App extends Component {
     return(
       <div id="card_container">     
         <NewCard addCard={this.handleAddCard}/>
-        {this.state.cards.map( (card, index) =>
-          <CardList 
-            header={card.header}
-            id={card.id}
-            key={card.id.toString()} 
-            items={card.items}
+        {this.state.cards.map( ({header,id,items,color}, index) =>
+          <CardItem 
+            header={header}
+            id={id}
+            key={id.toString()} 
+            items={items}
             index={index}
-            color={card.color}
+            color={color}
             removeCard={this.handleRemoveCard}
             updateHeader={this.handleUpdateHeader}
             addNewItem={this.handleAddNewItem}

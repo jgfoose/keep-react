@@ -2,10 +2,6 @@ import React, { Component } from  'react';
 
 class CardColors extends Component {
 
-  changeCardColor = () => {
-    this.props.updateCardColor(this.props.id, this.props.color);
-  }
-
   render() {
 
     let className = `color_option ${this.props.color}`
@@ -13,7 +9,7 @@ class CardColors extends Component {
     return (
       <div 
         className={className}
-        onClick={this.changeCardColor}
+        onClick={() => this.props.updateCardColor(this.props.cardId, this.props.color)}
       >
       </div>
     );

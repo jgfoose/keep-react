@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
-class ItemList extends Component {
+class ListItem extends Component {
 
   handleDeleteItem = () => {
-    this.props.deleteListItem(this.props.index, this.props.id);
+    this.props.deleteListItem(this.props.index, this.props.cardId);
   }
 
   render() {
@@ -20,4 +20,4 @@ class ItemList extends Component {
   }
 }
 
-export default ItemList;
+export default ListItem;
