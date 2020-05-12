@@ -20,7 +20,7 @@ newListItem = React.createRef();
         }
 
         const handleNewItem = (e) => {
-          if(e.keyCode === 13 || e.keyCode === 9) {
+          if(e.keyCode === 13) {
             context.actions.addNewItem(this.props.index, this.newListItem.current.value);
             e.target.value = "";
           }
@@ -37,18 +37,21 @@ newListItem = React.createRef();
           <div 
             className={className}
             id="id">
+            <div className="card_header">
               <div 
-                contentEditable="true"
-                className="cardTitle" 
-                ref={this.cardHeader}
-                onKeyDown={handleHeader}>
-                  {this.props.header}
-              </div>
-              <button 
-                className="delete_card" 
-                onClick={handleClick}>
-                ✖
-              </button>
+                  contentEditable="true"
+                  className="cardTitle" 
+                  ref={this.cardHeader}
+                  onKeyDown={handleHeader}>
+                    {this.props.header}
+                </div>
+                <button 
+                  className="delete_card" 
+                  onClick={handleClick}>
+                  ✖
+                </button>
+            </div>
+              
               {this.props.items.map( (item,index) =>
                 <ListItem 
                   item={this.props.items[index]}

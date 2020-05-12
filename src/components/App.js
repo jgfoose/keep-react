@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Provider } from './Context';
 import Cards from './Cards';
 import NewCard from './NewCard';
+import Nav from './Nav';
+import Sidenav from './Sidenav';
 
 class Card {
     constructor (id, items) {
@@ -125,10 +127,14 @@ class App extends Component {
           deleteListItem: this.handleDeleteItem
         }
       }}>
-        <div id="card_container">     
-          <NewCard addCard={this.handleAddCard}/>
-          <Cards />
+        <Nav />
+        <div className="row">
+          <Sidenav />  
+          <div id="card_container">   
+            <Cards />
+          </div>
         </div>
+        <NewCard addCard={this.handleAddCard}/>
       </Provider>
     );
   }
