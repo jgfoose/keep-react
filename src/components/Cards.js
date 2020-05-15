@@ -7,6 +7,7 @@ const Cards = () => {
   return (
     <Consumer>
       { context => {
+        //If label in side nav is selected, pull only cards with matching label
         let filteredCards =[]
         if(context.label_filter !== null && context.label_filter !== ""){
           filteredCards = context.cards.filter(card => card.label === context.label_filter)

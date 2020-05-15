@@ -16,10 +16,12 @@ newListItem = React.createRef();
       { context => {
         let className = `card ${this.props.color}`;
 
+        //Remove Card on click
         const handleClick = () => {
           context.actions.removeCard(this.props.id);
         }
 
+        //Add new todo / list item on enter
         const handleNewItem = (e) => {
           if(e.keyCode === 13) {
             context.actions.addNewItem(this.props.index, this.newListItem.current.value);
@@ -27,6 +29,7 @@ newListItem = React.createRef();
           }
         }
 
+        //Update header / title on enter or tab
         const handleHeader = (e) => {
           if (e.keyCode === 13 || e.keyCode === 9) {
             context.actions.updateHeader(this.props.index, this.cardHeader.current.innerHTML.trim());
@@ -52,7 +55,6 @@ newListItem = React.createRef();
                   ✖
                 </button>
             </div>
-              
               { this.props.items != null ?
                 this.props.items.map( (item,index) =>
                 <ListItem 
@@ -65,7 +67,7 @@ newListItem = React.createRef();
               <input 
                 type="text" 
                 className="itemInput" 
-                placeholder="New List Item"
+                placeholder="Add a List Item"
                 ref={this.newListItem}
                 onKeyUp={handleNewItem}>
               </input>
@@ -77,7 +79,10 @@ newListItem = React.createRef();
                   />
                 )}
               </div>
-              <CardLabels id={this.props.id}/>
+              <CardLabels 
+                id={this.props.id}
+                label={this.props.label}
+              />
           </div>
         );
       }}

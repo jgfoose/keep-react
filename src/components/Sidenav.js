@@ -3,15 +3,13 @@ import { Consumer } from './Context';
 import Nav from 'react-bootstrap/Nav';
 import Label from './Label';
 
-
-
 const Sidenav = () => {
   let newLabel = React.createRef();
   
   return ( 
     <Consumer>
       { context => {
-
+        //Update side nav with new label on submit
         const handleNewLabel = (e) => {
           e.preventDefault();
           context.actions.addLabel(newLabel.current.value);
@@ -19,7 +17,7 @@ const Sidenav = () => {
         }
 
         return (
-        <Nav id="side_nav" className="flex-column side_nav" bg="dark" variant="dark">
+        <Nav id="side_nav" className="flex-column side_nav collapse show" bg="dark" variant="dark">
           <Nav.Link onClick={ () => context.actions.updateLabelFilter("")}>All Notes</Nav.Link>
             <React.Fragment>
               {context.labels.map( (label, index) =>
@@ -32,7 +30,7 @@ const Sidenav = () => {
             </React.Fragment>
             <input 
               type="text" 
-              className="itemInput" 
+              className="label_input" 
               placeholder="New Label"
               ref={newLabel}>
             </input>

@@ -18,38 +18,44 @@ class Card {
 class App extends Component {
   
   state = {
-    cards: [],
+    cards: [{"header":"Sample Card","id":0,"items":["Add items / todo's below","Color code your cards below","Add labels in side nav and select the label in the dropdown below","Filter through cards with the labels in side nav", "Add a new card with the plus button"],"label":"","color":"yellow"}],
     labels: [],
     label_filter: ""
   }
 
+//Cards will be stored in local storage and retrieved on page refresh
 getLocalStorage = () => {
-    let storedCards = JSON.parse(window.localStorage.getItem("cards"));
-    let storedLabels = JSON.parse(window.localStorage.getItem("labels"));
-    let loadedCards = [];
+  let storedCards = JSON.parse(window.localStorage.getItem("cards"));
+  let storedLabels = JSON.parse(window.localStorage.getItem("labels"));
+  let loadedCards = [];
 
-    if (storedCards != null) {
-      for(var i=0; i < storedCards.length; i++){
+  //If there are stored cards, create populate loaded cards arrary
+  if (storedCards !== null) {
+    for(var i=0; i < storedCards.length; i++){
       let storedCard = storedCards[i];
       let thisCard = new Card(i);
-      thisCard.id = storedCard.id;
+      thisCard.id = i;
       thisCard.items = storedCard.items;
       thisCard.header = storedCard.header;
       thisCard.color = storedCard.color;
       thisCard.label = storedCard.label;
       loadedCards.push(thisCard);
       this.prevCardId = i + 1;
-   }
     }
     window.localStorage.clear();
     window.localStorage.setItem("cards", JSON.stringify(loadedCards));
     window.localStorage.setItem("labels", JSON.stringify(storedLabels));
-  if(storedLabels != null) {
+  }
+  
+  //If labels, update state
+  if(storedLabels !==null) {
     this.setState({
       labels: storedLabels
     })
   }
-  if(loadedCards != null) {
+
+  //if cards, update state, else default card will be loaded
+  if(loadedCards.length > 0) {
     this.setState({
       cards: loadedCards
     })
@@ -60,6 +66,7 @@ getLocalStorage = () => {
   //card id counter
   prevCardId = 0;
 
+  //New card when plus button is clicked.
   handleAddCard = () => {
     this.setState( prevState => {
       return {
@@ -80,6 +87,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Remove card when X is clicked
   handleRemoveCard = (id) => {
     this.setState( prevState => {
       return {
@@ -90,6 +98,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Update card header/title
   handleUpdateHeader = (index, newHeader) => {
     this.setState (prevState => ({
         header: prevState.cards[index].header = newHeader
@@ -98,6 +107,7 @@ getLocalStorage = () => {
       });
   }
 
+  //Add new list item / todo item
   handleAddNewItem = (index, newItem) => {
     this.setState ( prevState => {
       return {
@@ -108,6 +118,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Remove list item / todo when X is clicked
   handleDeleteItem = (listItem, cardId) => {
     let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     this.setState( prevState => ({
@@ -117,6 +128,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Update card color when clicked
   handleCardColor = (cardId, color) => {
     let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     this.setState( prevState => ({
@@ -126,6 +138,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Add label to side nav
   handleAddLabel = (label) => {
     this.setState( prevState => {
       return {
@@ -139,6 +152,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Remove label from side nav when X clicked
   handleDeleteLabel = (currentLabel) => {
     this.setState( prevState => ({
       labels: prevState.labels.filter(label => label !== currentLabel)
@@ -147,6 +161,7 @@ getLocalStorage = () => {
     });
   }
 
+  //Update card label when selected
   handleCardLabel = (cardId, label) => {
     let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     this.setState( prevState => ({
@@ -156,12 +171,14 @@ getLocalStorage = () => {
     });
   }
 
+  //Filter cards when label is selected in side nav
   handleCardFilter = (label) => {
     this.setState( prevState => ({
       label_filter: prevState.label_filter = label
     }))
   }
 
+  //fetch local storage on page load
   componentDidMount(){
     this.getLocalStorage();
   }
@@ -187,7 +204,6 @@ getLocalStorage = () => {
         <TopNav />
         <div className="row">
           <Sidenav />
-          
           <div id="card_container">   
             <Cards />
           </div>
