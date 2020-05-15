@@ -1,13 +1,46 @@
 import React from 'react';
+import { Consumer } from './Context';
 import Nav from 'react-bootstrap/Nav';
+import Label from './Label';
+
+
 
 const Sidenav = () => {
+  let newLabel = React.createRef();
+  
   return ( 
-    <Nav  className="flex-column side_nav">
-      <Nav.Link >Dev</Nav.Link>
-      <Nav.Link eventKey="link-1">Job Hunt</Nav.Link>
-      <Nav.Link eventKey="link-2">Personal</Nav.Link>
-    </Nav>
+    <Consumer>
+      { context => {
+
+        const handleNewLabel = (e) => {
+          e.preventDefault();
+          context.actions.addLabel(newLabel.current.value);
+          newLabel.current.value = "";
+        }
+
+        return (
+        <Nav id="side_nav" className="flex-column side_nav" bg="dark" variant="dark">
+          <Nav.Link onClick={ () => context.actions.updateLabelFilter("")}>All Notes</Nav.Link>
+            <React.Fragment>
+              {context.labels.map( (label, index) =>
+                  <Label 
+                    label={label}
+                    key={index} 
+                    index={index}
+                  />  
+                )}
+            </React.Fragment>
+            <input 
+              type="text" 
+              className="itemInput" 
+              placeholder="New Label"
+              ref={newLabel}>
+            </input>
+            <button className="add_label" onClick={handleNewLabel}>Add Label</button>
+        </Nav>
+      )}}
+    </Consumer>
+      
   );
 }
 

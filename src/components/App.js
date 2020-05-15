@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from './Context';
 import Cards from './Cards';
 import NewCard from './NewCard';
-import Nav from './Nav';
+import TopNav from './Nav';
 import Sidenav from './Sidenav';
 
 class Card {
@@ -11,36 +11,51 @@ class Card {
         this.items= [];
         this.header = "";
         this.color = "";
+        this.label ="";
     }
 }
 
 class App extends Component {
   
   state = {
-    cards: []
+    cards: [],
+    labels: [],
+    label_filter: ""
   }
 
-  getLocalStorage = () => {
-    var keys = Object.keys(window.localStorage);
+getLocalStorage = () => {
+    let storedCards = JSON.parse(window.localStorage.getItem("cards"));
+    let storedLabels = JSON.parse(window.localStorage.getItem("labels"));
     let loadedCards = [];
-    for(var i=0; i < keys.length; i++){
-      let storedCard = JSON.parse(window.localStorage.getItem(keys[i]));
+
+    if (storedCards != null) {
+      for(var i=0; i < storedCards.length; i++){
+      let storedCard = storedCards[i];
       let thisCard = new Card(i);
-      thisCard.id = i;
+      thisCard.id = storedCard.id;
       thisCard.items = storedCard.items;
       thisCard.header = storedCard.header;
       thisCard.color = storedCard.color;
+      thisCard.label = storedCard.label;
       loadedCards.push(thisCard);
       this.prevCardId = i + 1;
    }
-   window.localStorage.clear();
-   for( i=0; i<loadedCards.length; i++) {
-     window.localStorage.setItem(loadedCards[i].id, JSON.stringify(loadedCards[i]));
-   }
-   this.setState({
+    }
+    window.localStorage.clear();
+    window.localStorage.setItem("cards", JSON.stringify(loadedCards));
+    window.localStorage.setItem("labels", JSON.stringify(storedLabels));
+  if(storedLabels != null) {
+    this.setState({
+      labels: storedLabels
+    })
+  }
+  if(loadedCards != null) {
+    this.setState({
       cards: loadedCards
     })
   }
+   
+}
 
   //card id counter
   prevCardId = 0;
@@ -54,13 +69,13 @@ class App extends Component {
             header: "Card Title",
             id: this.prevCardId,
             items: [],
+            label: "",
             color: "white"
           }
         ]
       };
     }, () => {
-      let index = this.state.cards.findIndex(card => card.id === this.prevCardId);
-      window.localStorage.setItem(this.prevCardId, JSON.stringify(this.state.cards[index]));
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
       this.prevCardId += 1;
     });
   }
@@ -71,7 +86,7 @@ class App extends Component {
         cards: prevState.cards.filter(card => card.id !== id)
       };
     }, () => {
-      window.localStorage.removeItem(id.toString());
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
     });
   }
 
@@ -79,7 +94,7 @@ class App extends Component {
     this.setState (prevState => ({
         header: prevState.cards[index].header = newHeader
       }), () => {
-        window.localStorage.setItem(this.state.cards[index].id, JSON.stringify(this.state.cards[index]));
+        window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
       });
   }
 
@@ -89,7 +104,7 @@ class App extends Component {
         items: prevState.cards[index].items.push(newItem)
       };
     }, () => {
-      window.localStorage.setItem(this.state.cards[index].id, JSON.stringify(this.state.cards[index]));
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
     });
   }
 
@@ -98,7 +113,7 @@ class App extends Component {
     this.setState( prevState => ({
       items: prevState.cards[cardIndex].items.splice(listItem,1)
     }), () => {
-      window.localStorage.setItem(cardId, JSON.stringify(this.state.cards[cardIndex]));
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
     });
   }
 
@@ -107,8 +122,44 @@ class App extends Component {
     this.setState( prevState => ({
       color: prevState.cards[cardIndex].color = color
     }), () => {
-      window.localStorage.setItem(cardId, JSON.stringify(this.state.cards[cardIndex]));
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
     });
+  }
+
+  handleAddLabel = (label) => {
+    this.setState( prevState => {
+      return {
+        labels: [
+          ...prevState.labels,
+          label
+        ]
+      };
+    }, () => {
+      window.localStorage.setItem("labels", JSON.stringify(this.state.labels));
+    });
+  }
+
+  handleDeleteLabel = (currentLabel) => {
+    this.setState( prevState => ({
+      labels: prevState.labels.filter(label => label !== currentLabel)
+    }), () => {
+      window.localStorage.setItem("labels", JSON.stringify(this.state.labels));
+    });
+  }
+
+  handleCardLabel = (cardId, label) => {
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    this.setState( prevState => ({
+      label: prevState.cards[cardIndex].label = label
+    }), () => {
+      window.localStorage.setItem("cards", JSON.stringify(this.state.cards));
+    });
+  }
+
+  handleCardFilter = (label) => {
+    this.setState( prevState => ({
+      label_filter: prevState.label_filter = label
+    }))
   }
 
   componentDidMount(){
@@ -119,17 +170,24 @@ class App extends Component {
     return(
       <Provider value={{
         cards: this.state.cards,
+        labels: this.state.labels,
+        label_filter: this.state.label_filter,
         actions: {
           updateCardColor: this.handleCardColor,
           removeCard: this.handleRemoveCard,
           updateHeader: this.handleUpdateHeader,
           addNewItem: this.handleAddNewItem,
-          deleteListItem: this.handleDeleteItem
+          deleteListItem: this.handleDeleteItem,
+          addLabel: this.handleAddLabel,
+          deleteLabel: this.handleDeleteLabel,
+          updateCardLabel: this.handleCardLabel,
+          updateLabelFilter: this.handleCardFilter
         }
       }}>
-        <Nav />
+        <TopNav />
         <div className="row">
-          <Sidenav />  
+          <Sidenav />
+          
           <div id="card_container">   
             <Cards />
           </div>

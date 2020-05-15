@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ListItem from './ListItem';
 import ColorOptions from './ColorOptions';
 import { Consumer } from './Context';
+import CardLabels from './CardLabels';
 
 class CardItem extends Component {
 
@@ -52,14 +53,15 @@ newListItem = React.createRef();
                 </button>
             </div>
               
-              {this.props.items.map( (item,index) =>
+              { this.props.items != null ?
+                this.props.items.map( (item,index) =>
                 <ListItem 
                   item={this.props.items[index]}
                   index = {index}
                   key={index}
                   cardId = {this.props.id}
                 />
-              )}
+              ) : ''}
               <input 
                 type="text" 
                 className="itemInput" 
@@ -75,6 +77,7 @@ newListItem = React.createRef();
                   />
                 )}
               </div>
+              <CardLabels id={this.props.id}/>
           </div>
         );
       }}

@@ -2,13 +2,21 @@ import React from  'react';
 import { Consumer } from './Context';
 import CardItem from './CardItem';
 
-const Cards = (props) => {
+const Cards = () => {
 
   return (
     <Consumer>
-      { context => (
+      { context => {
+        let filteredCards =[]
+        if(context.label_filter !== null && context.label_filter !== ""){
+          filteredCards = context.cards.filter(card => card.label === context.label_filter)
+        }
+        else filteredCards = context.cards
+        
+
+        return(
         <React.Fragment>
-          {context.cards.map( (card, index) =>
+          {filteredCards.map( (card, index) =>
               <CardItem 
                 {...card}
                 key={card.id.toString()} 
@@ -16,7 +24,8 @@ const Cards = (props) => {
               />  
             )}
         </React.Fragment>
-      )}
+        );
+      }}
     </Consumer>
   );
 }
