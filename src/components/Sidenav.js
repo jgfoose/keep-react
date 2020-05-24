@@ -5,8 +5,8 @@ import Label from './Label';
 
 const Sidenav = () => {
   let newLabel = React.createRef();
-  
-  return ( 
+
+  return (
     <Consumer>
       { context => {
         //Update side nav with new label on submit
@@ -17,20 +17,20 @@ const Sidenav = () => {
         }
 
         return (
-        <Nav id="side_nav" className="flex-column side_nav collapse show" bg="dark" variant="dark">
+        <Nav id="side_nav" className="flex-column side_nav mr-auto" bg="dark" variant="dark">
           <Nav.Link onClick={ () => context.actions.updateLabelFilter("")}>All Notes</Nav.Link>
             <React.Fragment>
               {context.labels.map( (label, index) =>
-                  <Label 
+                  <Label
                     label={label}
-                    key={index} 
+                    key={index}
                     index={index}
-                  />  
+                  />
                 )}
             </React.Fragment>
-            <input 
-              type="text" 
-              className="label_input" 
+            <input
+              type="text"
+              className="label_input"
               placeholder="New Label"
               ref={newLabel}>
             </input>
@@ -38,7 +38,7 @@ const Sidenav = () => {
         </Nav>
       )}}
     </Consumer>
-      
+
   );
 }
 
