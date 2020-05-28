@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from './Context';
 import Cards from './Cards';
 import NewCard from './NewCard';
-import TopNav from './Nav';
-import Sidenav from './Sidenav';
+import NavHeader from './Nav';
 
 class Card {
     constructor (id, items) {
@@ -16,7 +15,7 @@ class Card {
 }
 
 class App extends Component {
-  
+
   state = {
     cards: [{"header":"Sample Card","id":0,"items":["Add items / todo's below","Color code your cards below","Add labels in side nav and select the label in the dropdown below","Filter through cards with the labels in side nav", "Add a new card with the plus button"],"label":"","color":"yellow"}],
     labels: [],
@@ -46,7 +45,7 @@ getLocalStorage = () => {
     window.localStorage.setItem("cards", JSON.stringify(loadedCards));
     window.localStorage.setItem("labels", JSON.stringify(storedLabels));
   }
-  
+
   //If labels, update state
   if(storedLabels !==null) {
     this.setState({
@@ -60,7 +59,7 @@ getLocalStorage = () => {
       cards: loadedCards
     })
   }
-   
+
 }
 
   //card id counter
@@ -201,10 +200,9 @@ getLocalStorage = () => {
           updateLabelFilter: this.handleCardFilter
         }
       }}>
-        <TopNav />
+        <NavHeader />
         <div className="row">
-          <Sidenav />
-          <div id="card_container">   
+          <div id="card_container">
             <Cards />
           </div>
         </div>

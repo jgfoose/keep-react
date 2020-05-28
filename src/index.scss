@@ -17,7 +17,7 @@ body {
 }
 
 #root {
-  width: 90%;
+  width: 100%;
   display: block;
   margin: 0 auto;
   position: relative;
@@ -111,6 +111,10 @@ body {
      display: flex !important;
   }
 
+.navbar-light .navbar-toggler {
+  margin-right: 15px;
+}
+
 #side_toggle {
     top: 0;
     flex: 20%;
@@ -145,7 +149,7 @@ body {
     }
     &.purple {
         background-color: $card_purple;
-    } 
+    }
     &.green {
         background-color: $card_green;
     }
@@ -320,7 +324,7 @@ body {
         border-radius: 15px;
     }
   }
-   
+
 }
 
 @media only screen and (max-width: 450px) {

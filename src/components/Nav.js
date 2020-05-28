@@ -1,15 +1,20 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
+import Sidenav from './Sidenav';
 
-const Nav = () => {
-  return ( 
-    <Navbar  bg="dark" variant="dark" flex-column>
-      <button className="navbar-toggler" data-toggle="collapse" href="#side_nav" aria-controls="side_nav" aria-expanded="true" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <Navbar.Brand href="#home">Keep React App</Navbar.Brand>
+const NavHeader = () => {
+
+  return (
+    <Navbar collapseOnSelect expand="xxl" variant="light">
+      <Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"  />
+        React Keep
+      </Navbar.Brand>
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Sidenav />
+        </Navbar.Collapse>
     </Navbar>
   );
 }
 
-export default Nav
+export default NavHeader
