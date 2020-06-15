@@ -17,6 +17,6 @@ export default function SignUp(props) {
   const submitHandler = e => {
     e.preventDefault();
 
-    axios.post('')
+    axios.post('https://keep-react-be.herokuapp.com/auth/register')
   }
 }
