@@ -14,7 +14,7 @@ class Card {
     }
 }
 
-class App extends Component {
+class Main extends Component {
 
   state = {
     cards: [{"header":"Sample Card","id":0,"items":["Add items / todo's below","Color code your cards below","Add labels in side nav and select the label in the dropdown below","Filter through cards with the labels in side nav", "Add a new card with the plus button"],"label":"","color":"yellow"}],
@@ -212,4 +212,4 @@ getLocalStorage = () => {
   }
 }
 
-export default App;
+export default Main;
