@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function Login(props) {
   // credentials store username/password submitted by user and sent to backend for verification
   const [ credentials, setCredentials ] = useState({
-    username: '',
+    email: '',
     password: ''
   });
 

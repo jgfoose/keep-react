@@ -3,6 +3,7 @@ import { Provider } from './Context';
 import Cards from './Cards';
 import NewCard from './NewCard';
 import NavHeader from './Nav';
+import { Button } from 'semantic-ui-react';
 
 class Card {
     constructor (id, items) {
@@ -182,6 +183,12 @@ getLocalStorage = () => {
     this.getLocalStorage();
   }
 
+  logout = e => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
+    this.props.history.push('/');
+  }
+
   render() {
     return(
       <Provider value={{
@@ -201,6 +208,9 @@ getLocalStorage = () => {
         }
       }}>
         <NavHeader />
+        <Button color="blue" className="logout-button" onClick={this.logout}>
+              Logout
+            </Button>
         <div className="row">
           <div id="card_container">
             <Cards />
