@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Message, Form, Segment } from 'semantic-ui-react';
 
 export default function SignUp(props) {
   const [ userCreds, setUserCreds ] = useState({
@@ -19,10 +20,14 @@ export default function SignUp(props) {
 
     axios.post('https://keep-react-be.herokuapp.com/auth/register', userCreds)
       .then(res => {
+        console.log(res);
+        
         setIncorrectCreds({ isIncorrect: false });
         props.history.push('/')
       })
       .catch(error => {
+        console.log(error);
+        
         setIncorrectCreds({ isIncorrect: true })
       })
   };
