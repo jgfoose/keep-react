@@ -28,6 +28,8 @@ export default function Login(props) {
         props.history.push('/home');
       })
       .catch(error => {
+        console.log(error.message);
+        
         setIncorrectCreds({ isIncorrect: true })
       })
   };
